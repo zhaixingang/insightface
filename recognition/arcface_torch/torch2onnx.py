@@ -17,7 +17,7 @@ def convert_onnx(net, path_module, output, opset=11, simplify=False):
     torch.onnx.export(net, img, output, keep_initializers_as_inputs=False, verbose=False, opset_version=opset)
     model = onnx.load(output)
     graph = model.graph
-    graph.input[0].type.tensor_type.shape.dim[0].dim_param = 'None'
+    # graph.input[0].type.tensor_type.shape.dim[0].dim_param = 'None'
     if simplify:
         from onnxsim import simplify
         model, check = simplify(model)
@@ -56,4 +56,4 @@ if __name__ == '__main__':
         os.makedirs(output_path)
     assert os.path.isdir(output_path)
     output_file = os.path.join(output_path, "%s.onnx" % model_name)
-    convert_onnx(backbone_onnx, input_file, output_file, simplify=args.simplify)
+    convert_onnx(backbone_onnx, input_file, output_file, opset=9, simplify=args.simplify)
